@@ -62,7 +62,7 @@ def parse_args():
                       nargs=argparse.REMAINDER)
   parser.add_argument('--load_dir', dest='load_dir',
                       help='directory to load models',
-                      default="/srv/share/jyang375/models")
+                      default="models")
   parser.add_argument('--image_dir', dest='image_dir',
                       help='directory to load images for demo',
                       default="images")
@@ -144,7 +144,10 @@ if __name__ == '__main__':
 
   print('Called with args:')
   print(args)
-
+  
+  if os.path.isdir(args.image_dir + '_det') is False:
+    os.mkdir(args.image_dir + '_det')
+    
   if args.cfg_file is not None:
     cfg_from_file(args.cfg_file)
   if args.set_cfgs is not None:
@@ -166,11 +169,7 @@ if __name__ == '__main__':
     'faster_rcnn_{}_{}_{}.pth'.format(args.checksession, args.checkepoch, args.checkpoint))
 
   pascal_classes = np.asarray(['__background__',
-                       'aeroplane', 'bicycle', 'bird', 'boat',
-                       'bottle', 'bus', 'car', 'cat', 'chair',
-                       'cow', 'diningtable', 'dog', 'horse',
-                       'motorbike', 'person', 'pottedplant',
-                       'sheep', 'sofa', 'train', 'tvmonitor'])
+                       'sedan', 'pickup', 'vanjeepsuv', 'truckbus'])
 
   # initilize the network here.
   if args.net == 'vgg16':
@@ -364,7 +363,7 @@ if __name__ == '__main__':
       if vis and webcam_num == -1:
           # cv2.imshow('test', im2show)
           # cv2.waitKey(0)
-          result_path = os.path.join(args.image_dir, imglist[num_images][:-4] + "_det.jpg")
+          result_path = os.path.join(args.image_dir + '_det', imglist[num_images][:-4] + "_det.jpg")
           cv2.imwrite(result_path, im2show)
       else:
           im2showRGB = cv2.cvtColor(im2show, cv2.COLOR_BGR2RGB)

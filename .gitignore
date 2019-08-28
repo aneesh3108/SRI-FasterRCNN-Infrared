@@ -205,3 +205,5 @@ lib/pycocotools/_mask.c
 # Folders
 models
 output
+images
+images_det

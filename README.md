@@ -51,6 +51,15 @@ python setup.py build develop
 
 It will compile all the modules you need, including NMS, ROI_Pooing, ROI_Align and ROI_Crop.
 
+Compile COCO API for Python: 
+```
+cd data
+git clone https://github.com/pdollar/coco.git
+cd coco/PythonAPI
+make
+cd ../../..
+```
+
 ## Train
 
 Before training, we want to make sure we have a pre-trained Resnet101 model already present. The default location for models is *data/pretrained_models*. So let us go ahead and make that directory: 
@@ -102,15 +111,20 @@ python test_net.py --dataset sri_infrared --checksession 1 --checkepoch 12 --che
 Specify the specific model session, chechepoch and checkpoint, e.g., SESSION=1, EPOCH=12, CHECKPOINT=420.
 
 ## Demo
-(I'm currently working on this. Ignore for now. Will be updated Thursday)
 If you want to run detection on your own images with a pre-trained model, download the pretrained model listed in above tables or train your own models at first, then add images to folder $ROOT/images, and then run
+
 ```
 python demo.py --net vgg16 \
                --checksession $SESSION --checkepoch $EPOCH --checkpoint $CHECKPOINT \
-               --cuda --load_dir path/to/model/directoy
+               --cuda --load_dir path/to/model/directory --dataset dataset_name
 ```
 
-Then you will find the detection results in folder $ROOT/images.
+Example: 
+```
+python demo.py --net res101 --checksession 1 --checkepoch 12 --checkpoint 420 --cuda --dataset sri_infrared
+```
+
+Then you will find the detection results in folder $ROOT/images_det.
 
 ## List of (important) files added/changed: 
 
@@ -150,3 +164,14 @@ Currently, the path is hardcoded as my directory path. But this can be changed t
                          'sedan', 'pickup', 'vanjeepsuv', 'truckbus')
 ```
 
+In ```demo.py```, added & changed the following: 
+
+```
+pascal_classes = np.asarray(['__background__', 'sedan', 'pickup', 'vanjeepsuv', 'truckbus'])
+```
+This changes the classes from default pascal to SRI classes. 
+
+```
+result_path = os.path.join(args.image_dir + '_det', imglist[num_images][:-4] + "_det.jpg")
+```
+Slight change from original repository - I changed the detection output folder to ```images_det``` as compared to ```images``` for better viewing large number of files. 
