@@ -124,7 +124,7 @@ Example:
 python demo.py --net res101 --checksession 1 --checkepoch 12 --checkpoint 420 --cuda --dataset sri_infrared
 ```
 
-Then you will find the detection results in folder $ROOT/images_det.
+Then you will find the detection results in folder $ROOT/images_det. Some example images are showed in the folder ```images_det```.
 
 ## List of (important) files added/changed: 
 
@@ -157,10 +157,10 @@ These functions define the dataset:
 e.g. which set (train or test), what is the path. 
 Currently, the path is hardcoded as my directory path. But this can be changed to whatever as long as it has an SRI_I95Data subfolder organized in PascalVOC fashion. 
 ```
-        self._image_set = image_set
-        self._devkit_path = '/home/arang/Desktop/Datasets/SRI_Infrared'
-        self._data_path = os.path.join(self._devkit_path, 'SRI_I95Data')
-        self._classes = ('__background__',  # always index 0
+self._image_set = image_set
+self._devkit_path = '/home/arang/Desktop/Datasets/SRI_Infrared'
+self._data_path = os.path.join(self._devkit_path, 'SRI_I95Data')
+self._classes = ('__background__',  # always index 0
                          'sedan', 'pickup', 'vanjeepsuv', 'truckbus')
 ```
 
